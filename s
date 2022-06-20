@@ -84,12 +84,10 @@ print([[
 =================================COMBAT===============================
 [1] camlock/cl - camlocks on player 
 [2] uncamlock/uncl - uncamlocks player
-[3] aimbot/target - aimlocks on player
+[3] aim/target - aimlocks on player
 [4] unaimbot/untarget - unaimlocks on player
 [5] aimpart - aimpart (Head or Torso)
 [6] aimvelocity/av - sets aimvelocity
-[7] fly/togglefly - flys 
-[8] flyspeed/fs - sets fly speed
 =================================MISC===============================
 [1] sit - makes you sit so u can suck dick ;)
 [2] view/spy - spys on a player 
@@ -155,18 +153,19 @@ getgenv().RunCommand = function(Cmd)
     end)
 end
 
-local ScreenGui = Instance.new("ScreenGui")
+local cmdbargui = Instance.new("ScreenGui")
 local Cmdbar = Instance.new("TextBox")
 local CmdbarARC = Instance.new("TextLabel")
 local Frame = Instance.new("Frame")
 local UIGradient = Instance.new("UIGradient")
 
 coroutine.resume(coroutine.create(function()
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ResetOnSpawn = false
+cmdbargui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+cmdbargui.ResetOnSpawn = false
+cmdbargui.Name = "SyyCmdBar"
 
 Cmdbar.Name = "Cmdbar"
-Cmdbar.Parent = ScreenGui
+Cmdbar.Parent = cmdbargui
 Cmdbar.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
 Cmdbar.BorderColor3 = Color3.fromRGB(255, 0, 255)
 Cmdbar.BorderSizePixel = 3
@@ -217,7 +216,7 @@ Uis.InputBegan:Connect(function(Key, Typing)
         Cmdbar.Text = ""
         wait()
         Cmdbar:CaptureFocus()
-        --Cmdbar:TweenSize(UDim2.new(0, 419, 0, 20), "Out", "Quad", 0.1, true)
+        Cmdbar:TweenSize(UDim2.new(0, 419, 0, 20), "Out", "Quad", 0.1, true)
     end
 end)
 Cmdbar.FocusLost:Connect(function(Foc)
@@ -312,115 +311,7 @@ local plr = game.Players.LocalPlayer
 repeat wait() until plr.Character
 local char = plr.Character
 
-getgenv().togglefly = function()
-    Flying = not Flying
-    Notify("yurr", "Flying: "..tostring(Flying), "", 3)
-    local T = Client.Character:FindFirstChild("HumanoidRootPart") or Client.Character:FindFirstChild("Torso")
-      local BodyGyro,BodyVelocity = Instance.new('BodyGyro',Torso),Instance.new('BodyVelocity',Torso)
-      BodyGyro.P = 9e9
-      BodyGyro.MaxTorque = Vector3.new(9e9,9e9,9e9)
-      BodyGyro.CFrame = game.Players.LocalPlayer.Character.Torso.CFrame
-      BodyVelocity.MaxForce = Vector3.new(9e9,9e9,9e9)
-      BodyVelocity.Velocity = Vector3.new(0,0.1,0)
-      BodyVelocity.Name = "SyyFly"
-    
-    while Flying == true and Client and Client.Character and Client.Character:FindFirstChild("Humanoid") and Client.Character.Humanoid.Health ~= 0 and RService.Heartbeat:Wait() and T do 
-        local Front, Back, Left, Right = 0, 0, 0, 0
-        if KeysTable["W"] == true then 
-            Front = Flyspeed 
-        elseif not KeysTable["W"] == true then
-            Front = 0 
-        end
-        if KeysTable["A"] == true then 
-            Right = -Flyspeed
-        elseif not KeysTable["A"] == true then 
-            Right = 0 
-        end
-        if KeysTable["S"] == true then 
-            Back = -Flyspeed 
-        elseif not KeysTable["S"] == true then 
-            Back = 0
-        end
-        if KeysTable["D"] == true then 
-            Left = Flyspeed
-        elseif not KeysTable["D"] == true then 
-            Left = 0
-        end
-        if tonumber(Front + Back) ~= 0 or tonumber(Left + Right) ~= 0 then 
-            BV.Velocity = ((Camera.CoordinateFrame.lookVector * (Front + Back)) + ((Camera.CoordinateFrame * CF(Left + Right, (Front + Back) * 0.2, 0).p) - Camera.CoordinateFrame.p)) * 50
-        else 
-            BV.Velocity = Vec3(0, 0.1, 0)
-        end
-        BG.CFrame = Camera.CoordinateFrame
-    end
-    FlyPart:Destroy();BG:Remove();BV:Remove()
-end
 
-Uis.InputBegan:Connect(function(Key)
-    if not (Uis:GetFocusedTextBox()) then
-        if Key.KeyCode == Enum.KeyCode.W then 
-            KeysTable["W"] = true 
-        end 
-        if Key.KeyCode == Enum.KeyCode.A then 
-            KeysTable["A"] = true 
-        end
-        if Key.KeyCode == Enum.KeyCode.S then 
-            KeysTable["S"] = true 
-        end
-        if Key.KeyCode == Enum.KeyCode.D then 
-            KeysTable["D"] = true 
-        end
-        if Key.KeyCode == Enum.KeyCode.F then 
-            if FirstFly == true then 
-                Notify("yurr", "You can now fly, like a bird.", "", 3)
-                FirstFly = false 
-            end
-            togglefly()
-        end
-        if Key.KeyCode == Enum.KeyCode.X then 
-            Noclip = not Noclip 
-            Notify("yurr", "Noclip: "..tostring(Noclip), "", 3)
-        end
-        if Key.KeyCode == Enum.KeyCode.LeftShift then
-            KeysTable["LeftShift"] = true
-            while Blink == true and KeysTable["LeftShift"] == true and Client and Client.Character and RService.Heartbeat:Wait() do
-                local ClientRF = Client.Character:FindFirstChild("HumanoidRootPart") or Client.Character:FindFirstChild("Torso")
-                local Hum = Client.Character:FindFirstChild("Humanoid")
-                ClientRF.CFrame = ClientRF.CFrame + Vec3(Hum.MoveDirection.X * Blinkspeed, Hum.MoveDirection.Y * Blinkspeed, Hum.MoveDirection.Z * Blinkspeed)
-            end 
-        end
-    end
-end)
-Uis.InputEnded:Connect(function(Key --[[Typing]])
-    if not (Uis:GetFocusedTextBox()) then
-        if Key.KeyCode == Enum.KeyCode.W then 
-            KeysTable["W"] = false 
-        end
-        if Key.KeyCode == Enum.KeyCode.A then 
-            KeysTable["A"] = false 
-        end
-        if Key.KeyCode == Enum.KeyCode.S then 
-            KeysTable["S"] = false 
-        end
-        if Key.KeyCode == Enum.KeyCode.D then 
-            KeysTable["D"] = false
-        end
-        if Key.KeyCode == Enum.KeyCode.LeftShift then
-            KeysTable["LeftShift"] = false
-        end
-    end
-end)
-
-
-Client.Character.Humanoid.Died:Connect(function()
-    if Flying then togglefly() end
-end)
-Client.CharacterAdded:Connect(function()
-    repeat wait() until Client.Character:FindFirstChild("Humanoid")
-    Client.Character.Humanoid.Died:Connect(function()
-        if Flying then togglefly() end
-    end)
-end)
 --COMMANDS
 Commands["Sit"] = {
     ["Aliases"] = {"sit"};
@@ -480,21 +371,6 @@ for i,v in pairs (doors)do
     end    
     end
 end
-}
-Commands["Toggles Fly"] = {
-    ["Aliases"] = {"fly", "togglefly"};
-    ["Function"] = function(Args)
-        togglefly()
-    end
-}
-Commands["Sets your Flyspeed"] = {
-    ["Aliases"] = {"`flyspeed", "`fs"};
-    ["Function"] = function(Args)
-        if Args[1] then 
-            Flyspeed = tonumber(Args[1])
-            Notify("yurr", "Flyspeed: "..tonumber(Flyspeed), "", 3)
-        end
-    end
 }
 Commands["SkyBox1"] = {
     ["Aliases"] = {"sky1"};
@@ -859,7 +735,7 @@ for i,v in pairs (glock) do
     v.UsePartColor = true
     wait()
     v.Material = "ForceField"
-    v.Color = ColorSequence.new(Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255))
+    v.Color = Color3.fromRGB(255, 255, 255)
     v.Transparency = 0
 
 
@@ -876,9 +752,51 @@ for i,v in pairs (shotty) do
     v.UsePartColor = true
     wait()
     v.Material = "ForceField"
-    v.Color = ColorSequence.new(Color3.fromRGB(255,255,255),Color3.fromRGB(255,255,255))
+    v.Color = Color3.fromRGB(255, 255, 255)
     v.Transparency = 0
 end
 end
 end
 end)
+--CREDIT TO DEVOUR
+ local rm = getrawmetatable(game) or debug.getrawmetatable(game) or getmetatable(game)
+if setreadonly then setreadonly(rm, false) else make_writeable(rm, true) end
+local caller, cscript = checkcaller or is_protosmasher_caller, getcallingscript or get_calling_script;
+local rindex, nindex, ncall, closure = rm.__index, rm.__newindex, rm.__namecall, newcclosure or read_me;
+
+rm.__namecall = closure(function(self, ...)
+    local Args, Method = {...}, getnamecallmethod() or get_namecall_method();
+    if Method == "BreakJoints" then 
+        return wait(9e9)
+    end
+    if game.PlaceId ~= (StreetsID) then
+        if Method == "FireServer" and not self.Name == "SayMessageRequest" then
+            if tostring(self.Parent) == "ReplicatedStorage" or self.Name == "lIII" then 
+                return wait(9e9) 
+            end
+            if Args[1] == "hey" then 
+                return wait(9e9) 
+            end
+        end
+        if Method == "FireServer" and self.Name == "Shoot" and AimbotTarget ~= nil and Aimbot == true  then
+            return ncall(self, AimbotTarget.Character[AimPart].CFrame + AimbotTarget.Character[AimPart].Velocity/Aimvelocity)
+        end
+    end
+    if game.PlaceId == (StreetsID) then
+        if Method == "FireServer" and Args[1] == "WalkSpeed" or Args[1] == "JumpPower" or Args[1] == "HipHeight" then 
+            return nil 
+        end
+        if Method == "FireServer" and self.Name == "Input" then 
+            if Args[1] == "bv" or Args[1] == "hb" or Args[1] == "ws" then 
+                return wait(9e9)
+            end
+        end
+        if Method == "FireServer" and self.Name == "Input" and AimbotTarget ~= nil and Aimbot == true then 
+            Args[2].mousehit = AimbotTarget.Character[AimPart].CFrame + AimbotTarget.Character[AimPart].Velocity/Aimvelocity 
+            Args[2].velo = math.huge
+            return ncall(self, unpack(Args))
+        end
+    end
+    return ncall(self, unpack(Args))
+end)
+if setreadonly then setreadonly(rm, true) else make_writeable(rm, false) end
