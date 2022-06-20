@@ -859,8 +859,8 @@ for i,v in pairs (glock) do
     v.UsePartColor = true
     wait()
     v.Material = "ForceField"
-    v.Color = Color3.fromRGB(255, 255, 255)
-    v.Transparency = 0.6
+    v.Color = ColorSequence.new(Color3.fromRGB(68, 143, 134),Color3.fromRGB(0, 0, 0))
+    v.Transparency = 0
 
 
     end
@@ -876,8 +876,8 @@ for i,v in pairs (shotty) do
     v.UsePartColor = true
     wait()
     v.Material = "ForceField"
-    v.Color = Color3.fromRGB(255, 255, 255)
-    v.Transparency = 0.6
+    v.Color = ColorSequence.new(Color3.fromRGB(68, 143, 134),Color3.fromRGB(0, 0, 0))
+    v.Transparency = 0
 end
 end
 end
