@@ -93,7 +93,7 @@ print([[
 [2] view/spy - spys on a player 
 [3] unview/unspy - no view :) 
 [4] removeseats/rs/noSeats/ns - ur penis cant go into someones mouth anymore
-[5] nodoors/removeDoors/nds/rds - Remove doors
+[5] nodoors/nds - Remove doors
 [6] autoReset/autoRe/ar - Resets you when ragdolled (idk if works anymore)
 [7] fov - Changes your fieldofview
 [8] skybox1/sky1 - skybox 1 
@@ -102,6 +102,7 @@ print([[
 [11] gunanims - pawels gun anims :)
 [12] skybox2/sky2 - skybox 2 
 [12] balling - hamster ball 
+[13] re - fully resets character (Destroys Char)
 ===============================KEYBINDS===============================
 Noclip - "X"
 Reset - "R"
@@ -312,6 +313,15 @@ repeat wait() until plr.Character
 local char = plr.Character
 
 
+Uis.InputBegan:Connect(function(Key)
+    if not (Uis:GetFocusedTextBox()) then
+        if Key.KeyCode == Enum.KeyCode.X then 
+            Noclip = not Noclip 
+            Notify("yurr", "Noclip: "..tostring(Noclip), "", 3)
+        end
+     end 
+end)
+
 --COMMANDS
 Commands["Sit"] = {
     ["Aliases"] = {"sit"};
@@ -360,7 +370,7 @@ Notify("yurr", "gun anims on")
 end
 }
 Commands["NoDoors"] = {
-    ["Aliases"] = {"nodoors", "doors"};
+    ["Aliases"] = {"nodoors", "nds"};
     ["Function"] = function(Args)
 local doors = game.Workspace:GetChildren()
 for i,v in pairs (doors)do 
@@ -522,7 +532,17 @@ Commands["UnEsp Esp'd Player"] = {
 Commands["Resets Your Character"] = {
     ["Aliases"] = {"r", "reset", "re", "res"};
     ["Function"] = function()
-       game.Players.LocalPlayer.Character.Humanoid.Health = 0
+     local LocalP = game.Players.LocalPlayer
+    local Mouse = LocalP:GetMouse()
+        prev = LocalP.Character:WaitForChild('HumanoidRootPart').CFrame
+        prev = LocalP.Character:WaitForChild('HumanoidRootPart').CFrame
+        LocalP.Character.Parent = workspace.Terrain
+        LocalP.Character:Destroy()
+        game:GetService('Workspace'):WaitForChild(LocalP.Name) 
+        for i=1,10 do
+            LocalP.Character:WaitForChild('HumanoidRootPart').CFrame = prev
+            wait()
+        end
     end
 }
 Commands["View a Player"] = {
@@ -640,8 +660,6 @@ while wait() do
             local LocalP = game.Players.LocalPlayer
             local Mouse = LocalP:GetMouse()
             prev = LocalP.Character:WaitForChild('HumanoidRootPart').CFrame
-            Mouse.KeyDown:Connect(function(key)
-                if key == "r" then
                     prev = LocalP.Character:WaitForChild('HumanoidRootPart').CFrame
                     LocalP.Character.Parent = workspace.Terrain
                     LocalP.Character.Torso:Destroy()
@@ -653,9 +671,7 @@ while wait() do
                 end
             end)
         end
-        end)
         end
-    end
 }
 
 
