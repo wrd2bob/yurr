@@ -88,6 +88,8 @@ print([[
 [4] unaimbot/untarget - unaimlocks on player
 [5] aimpart - aimpart (Head or Torso)
 [6] aimvelocity/av - sets aimvelocity
+[7] fly/togglefly - flys 
+[8] flyspeed/fs - sets fly speed
 =================================MISC===============================
 [1] sit - makes you sit so u can suck dick ;)
 [2] view/spy - spys on a player 
@@ -310,6 +312,115 @@ local plr = game.Players.LocalPlayer
 repeat wait() until plr.Character
 local char = plr.Character
 
+getgenv().togglefly = function()
+    Flying = not Flying
+    Notify("yurr", "Flying: "..tostring(Flying), "", 3)
+    local T = Client.Character:FindFirstChild("HumanoidRootPart") or Client.Character:FindFirstChild("Torso")
+      local BodyGyro,BodyVelocity = Instance.new('BodyGyro',Torso),Instance.new('BodyVelocity',Torso)
+      BodyGyro.P = 9e9
+      BodyGyro.MaxTorque = Vector3.new(9e9,9e9,9e9)
+      BodyGyro.CFrame = Torso.CFrame
+      BodyVelocity.MaxForce = Vector3.new(9e9,9e9,9e9)
+      BodyVelocity.Velocity = Vector3.new(0,0.1,0)
+      BodyVelocity.Name = "SyyFly"
+    
+    while Flying == true and Client and Client.Character and Client.Character:FindFirstChild("Humanoid") and Client.Character.Humanoid.Health ~= 0 and RService.Heartbeat:Wait() and T do 
+        local Front, Back, Left, Right = 0, 0, 0, 0
+        if KeysTable["W"] == true then 
+            Front = Flyspeed 
+        elseif not KeysTable["W"] == true then
+            Front = 0 
+        end
+        if KeysTable["A"] == true then 
+            Right = -Flyspeed
+        elseif not KeysTable["A"] == true then 
+            Right = 0 
+        end
+        if KeysTable["S"] == true then 
+            Back = -Flyspeed 
+        elseif not KeysTable["S"] == true then 
+            Back = 0
+        end
+        if KeysTable["D"] == true then 
+            Left = Flyspeed
+        elseif not KeysTable["D"] == true then 
+            Left = 0
+        end
+        if tonumber(Front + Back) ~= 0 or tonumber(Left + Right) ~= 0 then 
+            BV.Velocity = ((Camera.CoordinateFrame.lookVector * (Front + Back)) + ((Camera.CoordinateFrame * CF(Left + Right, (Front + Back) * 0.2, 0).p) - Camera.CoordinateFrame.p)) * 50
+        else 
+            BV.Velocity = Vec3(0, 0.1, 0)
+        end
+        BG.CFrame = Camera.CoordinateFrame
+    end
+    FlyPart:Destroy();BG:Remove();BV:Remove()
+end
+
+Uis.InputBegan:Connect(function(Key)
+    if not (Uis:GetFocusedTextBox()) then
+        if Key.KeyCode == Enum.KeyCode.W then 
+            KeysTable["W"] = true 
+        end 
+        if Key.KeyCode == Enum.KeyCode.A then 
+            KeysTable["A"] = true 
+        end
+        if Key.KeyCode == Enum.KeyCode.S then 
+            KeysTable["S"] = true 
+        end
+        if Key.KeyCode == Enum.KeyCode.D then 
+            KeysTable["D"] = true 
+        end
+        if Key.KeyCode == Enum.KeyCode.F then 
+            if FirstFly == true then 
+                Notify("yurr", "You can now fly, like a bird.", "", 3)
+                FirstFly = false 
+            end
+            togglefly()
+        end
+        if Key.KeyCode == Enum.KeyCode.X then 
+            Noclip = not Noclip 
+            Notify("yurr", "Noclip: "..tostring(Noclip), "", 3)
+        end
+        if Key.KeyCode == Enum.KeyCode.LeftShift then
+            KeysTable["LeftShift"] = true
+            while Blink == true and KeysTable["LeftShift"] == true and Client and Client.Character and RService.Heartbeat:Wait() do
+                local ClientRF = Client.Character:FindFirstChild("HumanoidRootPart") or Client.Character:FindFirstChild("Torso")
+                local Hum = Client.Character:FindFirstChild("Humanoid")
+                ClientRF.CFrame = ClientRF.CFrame + Vec3(Hum.MoveDirection.X * Blinkspeed, Hum.MoveDirection.Y * Blinkspeed, Hum.MoveDirection.Z * Blinkspeed)
+            end 
+        end
+    end
+end)
+Uis.InputEnded:Connect(function(Key --[[Typing]])
+    if not (Uis:GetFocusedTextBox()) then
+        if Key.KeyCode == Enum.KeyCode.W then 
+            KeysTable["W"] = false 
+        end
+        if Key.KeyCode == Enum.KeyCode.A then 
+            KeysTable["A"] = false 
+        end
+        if Key.KeyCode == Enum.KeyCode.S then 
+            KeysTable["S"] = false 
+        end
+        if Key.KeyCode == Enum.KeyCode.D then 
+            KeysTable["D"] = false
+        end
+        if Key.KeyCode == Enum.KeyCode.LeftShift then
+            KeysTable["LeftShift"] = false
+        end
+    end
+end)
+
+
+Client.Character.Humanoid.Died:Connect(function()
+    if Flying then togglefly() end
+end)
+Client.CharacterAdded:Connect(function()
+    repeat wait() until Client.Character:FindFirstChild("Humanoid")
+    Client.Character.Humanoid.Died:Connect(function()
+        if Flying then togglefly() end
+    end)
+end)
 
 Uis.InputBegan:Connect(function(Key)
     if Key.KeyCode == Enum.KeyCode.X then 
@@ -317,6 +428,7 @@ Uis.InputBegan:Connect(function(Key)
             Notify("yurr", "Noclip: "..tostring(Noclip), "", 3)
         end
     end)
+   
 --COMMANDS
 Commands["Sit"] = {
     ["Aliases"] = {"sit"};
@@ -376,6 +488,21 @@ for i,v in pairs (doors)do
     end    
     end
 end
+}
+Commands["Toggles Fly"] = {
+    ["Aliases"] = {"fly", "togglefly"};
+    ["Function"] = function(Args)
+        togglefly()
+    end
+}
+Commands["Sets your Flyspeed"] = {
+    ["Aliases"] = {"`flyspeed", "`fs"};
+    ["Function"] = function(Args)
+        if Args[1] then 
+            Flyspeed = tonumber(Args[1])
+            Notify("yurr", "Flyspeed: "..tonumber(Flyspeed), "", 3)
+        end
+    end
 }
 Commands["SkyBox1"] = {
     ["Aliases"] = {"sky1"};
