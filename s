@@ -319,7 +319,7 @@ getgenv().togglefly = function()
       local BodyGyro,BodyVelocity = Instance.new('BodyGyro',Torso),Instance.new('BodyVelocity',Torso)
       BodyGyro.P = 9e9
       BodyGyro.MaxTorque = Vector3.new(9e9,9e9,9e9)
-      BodyGyro.CFrame = game.Players.LocalPlayer.Character.CFrame
+      BodyGyro.CFrame = game.Players.LocalPlayer.Character.Torso.CFrame
       BodyVelocity.MaxForce = Vector3.new(9e9,9e9,9e9)
       BodyVelocity.Velocity = Vector3.new(0,0.1,0)
       BodyVelocity.Name = "SyyFly"
@@ -377,6 +377,10 @@ Uis.InputBegan:Connect(function(Key)
             end
             togglefly()
         end
+        if Key.KeyCode == Enum.KeyCode.X then 
+            Noclip = not Noclip 
+            Notify("yurr", "Noclip: "..tostring(Noclip), "", 3)
+        end
         if Key.KeyCode == Enum.KeyCode.LeftShift then
             KeysTable["LeftShift"] = true
             while Blink == true and KeysTable["LeftShift"] == true and Client and Client.Character and RService.Heartbeat:Wait() do
@@ -417,14 +421,6 @@ Client.CharacterAdded:Connect(function()
         if Flying then togglefly() end
     end)
 end)
-
-Uis.InputBegan:Connect(function(Key)
-    if Key.KeyCode == Enum.KeyCode.X then 
-            Noclip = not Noclip 
-            Notify("yurr", "Noclip: "..tostring(Noclip), "", 3)
-        end
-    end)
-   
 --COMMANDS
 Commands["Sit"] = {
     ["Aliases"] = {"sit"};
