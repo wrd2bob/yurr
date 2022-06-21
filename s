@@ -5,8 +5,8 @@ local NotificationBindable = Instance.new("BindableFunction")
 NotificationBindable.OnInvoke = callback
  
 game.StarterGui:SetCore("SendNotification", {
-    Title = "yurr";
-    Text = "0k baby";
+    Title = "antiblack";
+    Text = "Loaded";
     Duration = "1";
     Callback = NotificationBindable;
 })
@@ -81,6 +81,7 @@ ChatSpy()
 
 print([[
 
+[!] cmds in cmdbar to print these commands again.
 =================================COMBAT===============================
 [1] camlock/cl - camlocks on player 
 [2] uncamlock/uncl - uncamlocks player
@@ -123,6 +124,8 @@ getgenv().Notify = function(title, text, icon, time)
     }) 
 end
 
+Notify("antiblack", "Took "..string.format("%.3f", tick() - LoadingTime).." seconds to load", "" , 3)
+
 getgenv().SearchPlayers = function(Name)
     local Inserted = {}
         for _, p in pairs(game:GetService("Players"):GetPlayers()) do 
@@ -157,8 +160,6 @@ end
 local cmdbargui = Instance.new("ScreenGui")
 local Cmdbar = Instance.new("TextBox")
 local CmdbarARC = Instance.new("TextLabel")
-local Frame = Instance.new("Frame")
-local UIGradient = Instance.new("UIGradient")
 
 coroutine.resume(coroutine.create(function()
 cmdbargui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
@@ -168,44 +169,28 @@ cmdbargui.Name = "SyyCmdBar"
 Cmdbar.Name = "Cmdbar"
 Cmdbar.Parent = cmdbargui
 Cmdbar.BackgroundColor3 = Color3.fromRGB(43, 43, 43)
-Cmdbar.BorderColor3 = Color3.fromRGB(255, 0, 255)
+Cmdbar.BorderColor3 = Color3.fromRGB(255, 255, 255)
 Cmdbar.BorderSizePixel = 3
-Cmdbar.Position = UDim2.new(0, 0, 0.362876266, 0)
-Cmdbar.Size = UDim2.new(0, 320, 0, 16)
-Cmdbar.SizeConstraint = Enum.SizeConstraint.RelativeYY
+Cmdbar.Position = UDim2.new(0.004, 0, 0.363, 0)
+Cmdbar.Size = UDim2.new(0, 333, 0, 31)
 Cmdbar.Font = Enum.Font.SourceSansSemibold
-Cmdbar.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
 Cmdbar.Text = ""
 Cmdbar.TextColor3 = Color3.fromRGB(255, 255, 255)
-Cmdbar.TextSize = 19.000
-Cmdbar.TextWrapped = true
-Cmdbar.TextXAlignment = Enum.TextXAlignment.Center
+Cmdbar.TextSize = 20.000
 Cmdbar.Visible = false
 
 CmdbarARC.Name = "CmdbarARC"
 CmdbarARC.Parent = Cmdbar
-CmdbarARC.BackgroundColor3 = Color3.fromRGB(255, 170, 255)
+CmdbarARC.BackgroundColor3 = Color3.fromRGB(255, 0, 255)
+CmdbarARC.BackgroundTransparency = 1.000
 CmdbarARC.BorderColor3 = Color3.fromRGB(255, 255, 255)
-CmdbarARC.BorderSizePixel = 3
-CmdbarARC.Position = UDim2.new(-0.123076916, 0, 0, 0)
-CmdbarARC.Size = UDim2.new({0, 12},{0, 32})
+CmdbarARC.BorderSizePixel = 0
+CmdbarARC.Size = UDim2.new(0, 33, 0, 31)
 CmdbarARC.Font = Enum.Font.Code
 CmdbarARC.Text = ">"
 CmdbarARC.TextColor3 = Color3.fromRGB(255, 255, 255)
-CmdbarARC.TextSize = 10.000
+CmdbarARC.TextSize = 11.000
 CmdbarARC.TextWrapped = true
-CmdbarARC.Visible = true
-
-Frame.Parent = Cmdbar
-Frame.BackgroundColor3 = Color3.fromRGB(0,0,0)
-Frame.BorderColor3 = Color3.fromRGB(255,255,255)
-Frame.BorderSizePixel = 3
-Frame.Position = UDim2.new(-0.123076923, 0, 0.972426474, 0)
-Frame.Size = UDim2.new(0, 292, 0, 2)
-Frame.Visible = false
-
-UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(100,225,200)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(100,225,200)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(128,0,128))}
-UIGradient.Parent = Frame
 end))
 
 
@@ -217,7 +202,7 @@ Uis.InputBegan:Connect(function(Key, Typing)
         Cmdbar.Text = ""
         wait()
         Cmdbar:CaptureFocus()
-        Cmdbar:TweenSize(UDim2.new(0, 419, 0, 20), "Out", "Quad", 0.1, true)
+        --Cmdbar:TweenSize(UDim2.new(0, 333, 0, 31), "Out", "Quad", 0.1, true)
     end
 end)
 Cmdbar.FocusLost:Connect(function(Foc)
@@ -271,6 +256,39 @@ getgenv().ResetCharacter = function()
     end
 end
 
+getgenv().cmds = function()
+    print([[
+
+=================================COMBAT===============================
+[1] camlock/cl - camlocks on player 
+[2] uncamlock/uncl - uncamlocks player
+[3] aim/target - aimlocks on player
+[4] unaimbot/untarget - unaimlocks on player
+[5] aimpart - aimpart (Head or Torso)
+[6] aimvelocity/av - sets aimvelocity
+=================================MISC===============================
+[1] sit - makes you sit so u can suck dick ;)
+[2] view/spy - spys on a player 
+[3] unview/unspy - no view 
+[4] removeseats/rs/noseats/ns - ur penis cant go into someones mouth anymore
+[5] nodoors/nds - Remove doors
+[6] autoreset/autore/ar - Resets you when ragdolled (idk if works anymore)
+[7] fov - Changes your fieldofview
+[8] skybox1/sky1 - skybox 1 
+[9] esp/find - esp's a player :)
+[10] unesp/unfind - unesp's a player 
+[11] gunanims - pawels gun anims 
+[12] skybox2/sky2 - skybox 2 
+[12] balling - hamster ball 
+[13] re - fully resets character (Destroys Char)
+===============================KEYBINDS===============================
+Noclip - "X"
+Reset - "R"
+Shotty/Glock Colour - "G"
+-------------------------------------------------------------------------
+]])
+end
+
 
 getgenv().EspPlayer = function(Dude)
     
@@ -287,7 +305,7 @@ getgenv().EspPlayer = function(Dude)
     bgui.ResetOnSpawn = true
 	
 	tlabel.Name = "espTarget"
-	tlabel.BackgroundColor3 = Color3.new(255, 255, 255)
+	tlabel.BackgroundColor3 = Color3.new(255, 0, 255)
 	tlabel.BackgroundTransparency = 1
 	tlabel.BorderSizePixel = 0
 	tlabel.Position = UDim2.new(0, 0, 0, -30)
@@ -317,7 +335,7 @@ Uis.InputBegan:Connect(function(Key)
     if not (Uis:GetFocusedTextBox()) then
         if Key.KeyCode == Enum.KeyCode.X then 
             Noclip = not Noclip 
-            Notify("yurr", "Noclip: "..tostring(Noclip), "", 3)
+            Notify("antiblack", "Noclip: "..tostring(Noclip), "", 3)
         end
      end 
 end)
@@ -350,7 +368,6 @@ shotty.Unequipped:connect(function()
     HUM:Stop()
 end)
 game:GetService("Players").LocalPlayer.Backpack.Glock.LocalScript:Destroy()
-game:GetService("Players").LocalPlayer.Backpack.Glock.Reloading:Destroy()
 game:GetService("Players").LocalPlayer.Backpack.Glock.Idle:Destroy()
 local lplr = game:GetService("Players").LocalPlayer
 local Glock = lplr.Backpack:FindFirstChild("Glock")
@@ -366,7 +383,7 @@ end)
 Glock.Unequipped:connect(function()
     HUM:Stop()
 end)
-Notify("yurr", "gun anims on")
+Notify("antiblack", "gun anims on")
 end
 }
 Commands["NoDoors"] = {
@@ -448,7 +465,7 @@ Commands["Sets your FieldOfView"] = {
         if Args[1] then 
             Camera.FieldOfView = tonumber(Args[1])
         end
-        Notify("yurr", "FieldOfView: "..tonumber(Args[1]), "", 3)
+        Notify("antiblack", "FieldOfView: "..tonumber(Args[1]), "", 3)
     end
 }
 Commands["Sets Aimbot Target"] = {
@@ -457,14 +474,14 @@ Commands["Sets Aimbot Target"] = {
         if Args[1] then 
             AimbotTarget = SearchPlayers(Args[1]);Aimbot = true
         end
-        Notify("yurr", "Aimbot Target: "..tostring(AimbotTarget), "", 3)
+        Notify("antiblack", "Aimbot Target: "..tostring(AimbotTarget), "", 3)
     end
 }
 Commands["UnAimbots Aimbotted Target"] = {
     ["Aliases"] = {"unaim"};
     ["Function"] = function()
         AimbotTarget = nil;Aimbot = false
-        Notify("yurr", "Aimbot: "..tostring(Aimbot), "", 3)
+        Notify("antiblack", "Aimbot: "..tostring(Aimbot), "", 3)
     end
 }
 Commands["Sets Camlock Target"] = {
@@ -473,14 +490,21 @@ Commands["Sets Camlock Target"] = {
         if Args[1] then 
             CamlockTarget = SearchPlayers(Args[1]);Camlock = true
         end
-        Notify("yurr", "Camlock Target: "..tostring(CamlockTarget), "", 3)
+        Notify("antiblack", "Camlock Target: "..tostring(CamlockTarget), "", 3)
     end
 }
 Commands["UnCamlocks Camlocked Target"] = {
     ["Aliases"] = {"uncamlock", "uncl"};
     ["Function"] = function()
         CamlockTarget = nil;Camlock = false 
-        Notify("yurr", "Camlock: "..tostring(Camlock), "", 3)
+        Notify("antiblack", "Camlock: "..tostring(Camlock), "", 3)
+    end
+}
+Commands["cmds"] = {
+    ["Aliases"] = {"cmds"};
+    ["Function"] = function()
+       cmds()
+       Notify("antiblack", "Commands printed to console\n{F9}", "", 3)
     end
 }
 Commands["Sets Aimbot Part"] = {
@@ -490,7 +514,7 @@ Commands["Sets Aimbot Part"] = {
         if AimPartTable[Args[1]] then 
             AimPart = AimPartTable[Args[1]] 
         end
-        Notify("yurr", "AimPart: "..tostring(AimPart), "", 3)
+        Notify("antiblack", "AimPart: "..tostring(AimPart), "", 3)
     end
 }
 Commands["Sets Aimvelocity"] = {
@@ -499,7 +523,7 @@ Commands["Sets Aimvelocity"] = {
         if Args[1] then 
             Aimvelocity = tonumber(Args[1])
         end
-        Notify("yurr", "Aimvelocity: "..tonumber(Args[1]), "", 3)
+        Notify("antiblack", "Aimvelocity: "..tonumber(Args[1]), "", 3)
     end
 }
 Commands["Esp a Player"] = {
@@ -511,7 +535,7 @@ Commands["Esp a Player"] = {
                 EspPlayer(EspTarget)
             end
         end
-        Notify("yurr", "Esp Target: "..tostring(EspTarget), "", 3)
+        Notify("antiblack", "Esp Target: "..tostring(EspTarget), "", 3)
     end
 }
 Commands["UnEsp Esp'd Player"] = {
@@ -551,7 +575,7 @@ Commands["View a Player"] = {
         if Args[1] then 
             ViewTarget = SearchPlayers(Args[1]);Viewing = true 
         end
-        Notify("yurr", "View Target: "..tostring(ViewTarget), "", 3)
+        Notify("antiblack", "View Target: "..tostring(ViewTarget), "", 3)
     end
 }
 Commands["UnView Viewed Target"] = {
@@ -559,14 +583,14 @@ Commands["UnView Viewed Target"] = {
     ["Function"] = function()
         ViewTarget = nil;Viewing = false
         Camera.CameraSubject = Client.Character
-        Notify("yurr", "Viewing: "..tostring(Viewing), "", 3)
+        Notify("antiblack", "Viewing: "..tostring(Viewing), "", 3)
     end
 }
 Commands["Toggles Noclip"] = {
     ["Aliases"] = {"noclip", "nc", "nclip"};
     ["Function"] = function()
         Noclip = not Noclip 
-        Notify("yurr", "Noclip: "..tostring(Noclip), "", 3)
+        Notify("antiblack", "Noclip: "..tostring(Noclip), "", 3)
     end
 }
 Commands["Removes Chairs"] = {
@@ -578,7 +602,7 @@ for i,v in next, workspace:GetDescendants() do
         v:Destroy()
     end
         end
-Notify("yurr", "Removed all seats")
+Notify("antiblack", "Removed all seats")
     end
 }
 Commands["balling"] = {
@@ -650,7 +674,7 @@ Commands["AutoReset"] = {
     ["Aliases"] = { "autore", "ar"};
     ["Function"] = function()
          game.StarterGui:SetCore("SendNotification", {
-Title = "yurr";
+Title = "antiblack";
 Text = "auto setspawn reset looped";
 Duration = 5;
 })
@@ -700,7 +724,6 @@ print([[
 
 ]])
 game:GetService("Workspace").FallenPartsDestroyHeight = math.huge-math.huge
-Notify("yurr", "Took "..string.format("%.3f", tick() - LoadingTime).." seconds to load", "" , 3)
 
 
 
@@ -750,7 +773,7 @@ for i,v in pairs (glock) do
    if v.Name == "Union" or "Heh" or "Handle" or "Barrel" or "Clip" then
     v.UsePartColor = true
     wait()
-    v.Material = "ForceField"
+    v.Material = "Plastic"
     v.Color = Color3.fromRGB(255, 255, 255)
     v.Transparency = 0
 
@@ -767,7 +790,7 @@ for i,v in pairs (shotty) do
     if v.Name == "Union" then
     v.UsePartColor = true
     wait()
-    v.Material = "ForceField"
+    v.Material = "Plastic"
     v.Color = Color3.fromRGB(255, 255, 255)
     v.Transparency = 0
 end
